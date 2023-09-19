@@ -36,13 +36,7 @@ export class PersonController {
   // post请求
   @Post('create')
   createUser(@Body() Body, @Session() session) {
-    console.log('session: ', session.code);
-    console.log('Body: ', Body);
-    if (session.code.toLocaleLowerCase() === Body?.code?.toLocaleLowerCase()) {
-      return { message: '验证码正确', code: 200 };
-    } else {
-      return { message: '验证码错误', code: 200 };
-    }
+    return this.personService.createUser(Body, session);
   }
   // @Body('name')通过注入参数的形式直接要求返回body.name
   // create(@Body('name') body) {

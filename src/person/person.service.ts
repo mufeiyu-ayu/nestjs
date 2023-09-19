@@ -21,6 +21,14 @@ export class PersonService {
     res.type('image/svg+xml');
     res.send(captcha.data);
   }
+  // 验证用户信息
+  createUser(Body, session) {
+    if (session.code.toLocaleLowerCase() === Body?.code?.toLocaleLowerCase()) {
+      return { message: '验证码正确', code: 200 };
+    } else {
+      return { message: '验证码错误', code: 200 };
+    }
+  }
 
   findAll() {
     return `This action returns all person`;

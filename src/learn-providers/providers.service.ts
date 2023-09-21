@@ -6,3 +6,4 @@ export class providersService {
     return '工厂模式注入数据';
   }
 }
+//

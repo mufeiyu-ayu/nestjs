@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Request, Response, NextFunction } from 'express';
 import * as cors from 'cors';
+import { join } from 'path';
 // 设置白名单，只有跳转cat的才能正常跳转，其余一律返回指定send
 const whiteList = ['/cat'];
 function MiddleWareAll(req: Request, res: Response, next: NextFunction) {
@@ -12,8 +13,13 @@ function MiddleWareAll(req: Request, res: Response, next: NextFunction) {
   }
 }
 import * as session from 'express-session';
+// 静态资源访问
+import { NestExpressApplication } from '@nestjs/platform-express';
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  app.useStaticAssets(join(__dirname, 'images'), {
+    prefix: '/ayu',
+  });
   app.use(
     session({
       secret: 'ayu',
@@ -22,8 +28,8 @@ async function bootstrap() {
       cookie: { maxAge: 1000000 },
     })
   );
-  app.use(cors); // 第三方解决跨域的中间件
-  app.use(MiddleWareAll); // 使用全局中间件
+  // app.use(cors); // 第三方解决跨域的中间件
+  // app.use(MiddleWareAll); // 使用全局中间件
   await app.listen(3000);
 }
 bootstrap();

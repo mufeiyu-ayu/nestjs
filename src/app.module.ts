@@ -11,7 +11,6 @@ import { ConfigMoudle } from './config/config.module';
   controllers: [AppController], // 模块中定义的必须实例化的控制器集
   providers: [AppService], // 将由Nest注入器实例化并且至少可以在此模块之间共享的提供程序
   imports: [
-    PersonModule,
     LearnControllerModule,
     LearnProvidersModule,
     CatModule,

@@ -19,7 +19,7 @@ export class CatController {
   ) {}
   @Get()
   findAll() {
-    // 在cat模块中使用gloUser模块
+    // 在cat模块中使用glo
     return this.gloUserService.findAll();
   }
 }

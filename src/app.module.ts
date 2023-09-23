@@ -18,6 +18,7 @@ import { UploadModule } from './upload/upload.module';
     GloUserModule,
     ConfigMoudle.forRoot({ path: '/ayu' }),
     UploadModule,
+    PersonModule,
   ],
 })
 export class AppModule {}

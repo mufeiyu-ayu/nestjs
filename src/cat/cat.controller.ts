@@ -22,4 +22,9 @@ export class CatController {
     // 在cat模块中使用glo
     return this.gloUserService.findAll();
   }
+  @Post()
+  async create(@Body() CreatecatDto: CreateCatDto) {
+    console.log(CreatecatDto);
+    return `received: ${JSON.stringify(CreatecatDto)}`;
+  }
 }

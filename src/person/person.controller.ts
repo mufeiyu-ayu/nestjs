@@ -17,11 +17,17 @@ import { PersonService } from './person.service';
 import { CreatePersonDto } from './dto/create-person.dto';
 import { UpdatePersonDto } from './dto/update-person.dto';
 import { Request as ExRequest } from 'express';
-
+import { ApiTags, ApiOperation, ApiParam, ApiQuery } from '@nestjs/swagger';
 @Controller('person')
+@ApiTags('person模块') // 添加分组
 export class PersonController {
   constructor(private readonly personService: PersonService) {}
   @Get('code')
+  @ApiOperation({
+    // // 接口描述信息
+    summary: '测试admin',
+    description: '这是关于code请求参数的描述信息',
+  })
   getCode(@Req() req, @Res() res, @Session() session) {
     this.personService.createCode(req, res, session);
   }
@@ -47,8 +53,9 @@ export class PersonController {
   //   };
   // }
   // 动态参数匹配
-  @HttpCode(500) // 指定状态码
+  @HttpCode(200) // 指定状态码
   @Get(':id')
+  @ApiParam({ name: 'id', description: '用户id', required: true })
   finedId(@Param('id') param, @Headers() headers) {
     console.log(param);
     return {

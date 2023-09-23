@@ -5,6 +5,11 @@ import * as cors from 'cors';
 import { join } from 'path';
 import { Response as response } from './common/response';
 import { HttpFilter } from './common/filter';
+import * as session from 'express-session';
+import { ValidationPipe } from '@nestjs/common';
+// 静态资源访问
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 // 设置白名单，只有跳转cat的才能正常跳转，其余一律返回指定send
 const whiteList = ['/cat'];
 function MiddleWareAll(req: Request, res: Response, next: NextFunction) {
@@ -14,11 +19,16 @@ function MiddleWareAll(req: Request, res: Response, next: NextFunction) {
     res.send('小黑子露出黑脚了');
   }
 }
-import * as session from 'express-session';
-// 静态资源访问
-import { NestExpressApplication } from '@nestjs/platform-express';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const options = new DocumentBuilder()
+    .setTitle('ayu的接口文档')
+    .setDescription('文档的描述信息')
+    .setVersion('1.0.0')
+    .build();
+  const document = SwaggerModule.createDocument(app, options);
+  SwaggerModule.setup('/api-docs', app, document);
+
   app.useStaticAssets(join(__dirname, 'images'), {
     prefix: '/ayu',
   });
@@ -32,6 +42,7 @@ async function bootstrap() {
   );
   app.useGlobalFilters(new HttpFilter()); // 异常拦截器
   app.useGlobalInterceptors(new response()); // 响应拦截器
+  app.useGlobalPipes(new ValidationPipe()); // 全局管道
   // app.use(cors); // 第三方解决跨域的中间件
   // app.use(MiddleWareAll); // 使用全局中间件
   await app.listen(3000);

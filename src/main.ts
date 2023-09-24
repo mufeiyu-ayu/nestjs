@@ -1,4 +1,4 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Request, Response, NextFunction } from 'express';
 import * as cors from 'cors';
@@ -7,6 +7,8 @@ import { Response as response } from './common/response';
 import { HttpFilter } from './common/filter';
 import * as session from 'express-session';
 import { ValidationPipe } from '@nestjs/common';
+import { RolesGuard } from './common/auth.guard';
+
 // 静态资源访问
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
@@ -43,6 +45,7 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpFilter()); // 异常拦截器
   app.useGlobalInterceptors(new response()); // 响应拦截器
   app.useGlobalPipes(new ValidationPipe()); // 全局管道
+  app.useGlobalGuards(new RolesGuard(new Reflector())); // 全局守卫
   // app.use(cors); // 第三方解决跨域的中间件
   // app.use(MiddleWareAll); // 使用全局中间件
   await app.listen(3000);

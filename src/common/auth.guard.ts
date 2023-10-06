@@ -1,9 +1,4 @@
-import {
-  Injectable,
-  CanActivate,
-  ExecutionContext,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
 @Injectable()
@@ -23,7 +18,7 @@ export class RolesGuard implements CanActivate {
 
     //request.headers.authorization  => Bearer 121218218219219219281
     const token = request.headers.authorization;
-    console.log(token, roles);
+
     return matchRoles(roles, token);
     // 如果守卫验证失败我们可以加上自定义的错误信息
     // throw new UnauthorizedException('无权限访问');

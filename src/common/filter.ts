@@ -4,24 +4,35 @@ import {
   ArgumentsHost,
   HttpException,
 } from '@nestjs/common';
-
+import { exec } from 'child_process';
 import { Request, Response } from 'express';
 
 @Catch(HttpException)
-export class HttpFilter implements ExceptionFilter {
+// 异常赛选器
+export class HttpExceptionFilter implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
-    const request = ctx.getRequest<Request>();
     const response = ctx.getResponse<Response>();
+    const request = ctx.getRequest<Request>();
     const status = exception.getStatus();
-    const res = exception.message;
+    const res: any = exception.getResponse();
+    // { message: [ '邮箱格式不正确' ], error: 'Bad Request', statusCode: 400 }
+
+    const returnMessage = () => {
+      if (typeof res === 'string') {
+        return res;
+      } else if (typeof res === 'object') {
+        return res.message[0];
+      }
+    };
+
     response.status(status).json({
-      data: null,
-      time: new Date().getTime(),
-      success: false,
-      path: request.url,
       status,
-      message: res,
+      data: null,
+      timestamp: new Date().toISOString(),
+      path: request.url,
+      success: false,
+      message: returnMessage(),
     });
   }
 }

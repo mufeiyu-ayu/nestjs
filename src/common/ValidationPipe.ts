@@ -1,13 +1,12 @@
 import {
-  PipeTransform,
-  Injectable,
   ArgumentMetadata,
-  BadRequestException,
+  HttpException,
   HttpStatus,
+  Injectable,
+  PipeTransform,
 } from '@nestjs/common';
-import { validate } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
-import { HttpException } from '@nestjs/common';
+import { validate } from 'class-validator';
 
 @Injectable()
 export class ValidationPipe implements PipeTransform<any> {
@@ -21,6 +20,7 @@ export class ValidationPipe implements PipeTransform<any> {
     if (errors.length > 0) {
       // 抛出错误对象,利用异常筛选器来接收然后返回给前端错误对象
       // HttpStatus.BAD_REQUEST规定为参数错误
+
       throw new HttpException(errors, HttpStatus.BAD_REQUEST, {
         description: '参数异常',
       });

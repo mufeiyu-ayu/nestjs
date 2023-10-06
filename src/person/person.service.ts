@@ -1,48 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePersonDto } from './dto/create-person.dto';
-import { UpdatePersonDto } from './dto/update-person.dto';
-import * as svgCaptcha from 'svg-captcha';
-
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Person } from './entities/person.entity';
 @Injectable()
 export class PersonService {
-  create(createPersonDto: CreatePersonDto) {
-    return 'This action adds a new person';
+  @InjectRepository(Person)
+  private readonly personRepository: Repository<Person>;
+  getPerson() {
+    return this.personRepository.find();
   }
-
-  createCode(req, res, session) {
-    const captcha = svgCaptcha.create({
-      size: 4,
-      fontSize: 50,
-      width: 100,
-      height: 34,
-      background: '#cc9966',
-    });
-    req.session.code = captcha.text; //存储验证码记录到session
-    res.type('image/svg+xml');
-    res.send(captcha.data);
+  async addPerson(person) {
+    return this.personRepository.save(person);
   }
-  // 验证用户信息
-  createUser(Body, session) {
-    if (session.code.toLocaleLowerCase() === Body?.code?.toLocaleLowerCase()) {
-      return { message: '验证码正确', code: 200 };
-    } else {
-      return { message: '验证码错误', code: 200 };
-    }
-  }
-
-  findAll() {
-    return `This action returns all person`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} person`;
-  }
-
-  update(id: number, updatePersonDto: UpdatePersonDto) {
-    return `This action updates a #${id} person`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} person`;
+  delete(id: number) {
+    return this.personRepository.delete(id);
   }
 }

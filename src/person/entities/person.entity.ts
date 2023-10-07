@@ -9,4 +9,6 @@ export class Person {
 
   @Column()
   age: number;
+  @Column()
+  imgAddress: string;
 }

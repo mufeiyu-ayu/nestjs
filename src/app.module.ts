@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PersonModule } from './person/person.module';
+import { OssModule } from './oss/oss.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -25,6 +26,7 @@ import { PersonModule } from './person/person.module';
       },
     }),
     PersonModule,
+    OssModule,
   ],
   controllers: [AppController], // 模块中定义的必须实例化的控制器集
   providers: [AppService], // 将由Nest注入器实例化并且至少可以在此模块之间共享的提供程序

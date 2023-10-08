@@ -8,7 +8,7 @@ import { TransformInterceptor } from './common/response';
 // 静态资源访问
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-
+import * as session from 'express-session';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     cors: true,
@@ -24,6 +24,14 @@ async function bootstrap() {
   app.useGlobalInterceptors(new TransformInterceptor()); // 响应拦截器
   app.useGlobalPipes(new ValidationPipe()); // 全局管道
   app.useGlobalGuards(new RolesGuard(new Reflector())); // 全局守卫
+
+  app.use(
+    session({
+      secret: 'ayu',
+      resave: false,
+      saveUninitialized: false,
+    })
+  );
   await app.listen(3000);
 }
 bootstrap();

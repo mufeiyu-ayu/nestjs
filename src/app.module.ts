@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { LoginModule } from './login/login.module';
 import { OnebyoneModule } from './onebyone/onebyone.module';
 import { OssModule } from './oss/oss.module';
 import { PersonModule } from './person/person.module';
@@ -26,9 +28,17 @@ import { PersonModule } from './person/person.module';
         authPlugin: 'sha256_password',
       },
     }),
+    JwtModule.register({
+      global: true,
+      secret: 'ayu',
+      signOptions: {
+        expiresIn: '7d',
+      },
+    }),
     PersonModule,
     OssModule,
     OnebyoneModule,
+    LoginModule,
   ],
   controllers: [AppController], // 模块中定义的必须实例化的控制器集
   providers: [AppService], // 将由Nest注入器实例化并且至少可以在此模块之间共享的提供程序

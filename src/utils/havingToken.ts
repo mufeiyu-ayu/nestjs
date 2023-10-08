@@ -12,9 +12,10 @@ export const havingToking = (req: Request, jwtService: JwtService): boolean => {
       throw new HttpException('未携带token', 401);
     }
     const token = bearer[1];
+
     try {
       const info = jwtService.verify(token); // 这里已经在做验证token是否正确的操作了
-      console.log(token, 444);
+
       (req as any).user = info.user;
       return true;
     } catch (e) {

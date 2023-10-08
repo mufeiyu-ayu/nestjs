@@ -9,6 +9,7 @@ import { LoginModule } from './login/login.module';
 import { OnebyoneModule } from './onebyone/onebyone.module';
 import { OssModule } from './oss/oss.module';
 import { PersonModule } from './person/person.module';
+import { OnebymoreModule } from './onebymore/onebymore.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -41,6 +42,7 @@ import { PersonModule } from './person/person.module';
     OssModule,
     OnebyoneModule,
     LoginModule,
+    OnebymoreModule,
   ],
   controllers: [AppController], // 模块中定义的必须实例化的控制器集
   providers: [

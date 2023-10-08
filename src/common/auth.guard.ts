@@ -25,17 +25,6 @@ export class RolesGuard implements CanActivate {
     if (!roles) {
       return true;
     }
-
-    //request.headers.authorization  => Bearer 121218218219219219281
-    const token = request.headers.authorization;
-
-    return matchRoles(roles, token);
-    // 如果守卫验证失败我们可以加上自定义的错误信息
-    // throw new UnauthorizedException('无权限访问');
+    // do something
   }
-}
-function matchRoles(roles: string[], token: string) {
-  // verify
-  // do something
-  return true;
 }

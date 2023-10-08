@@ -12,7 +12,7 @@ export class Login {
   id: number;
 
   @Column({
-    length: 50,
+    length: 100,
     comment: '用户名',
   })
   username: string;

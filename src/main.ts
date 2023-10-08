@@ -1,8 +1,8 @@
-import { NestFactory, Reflector } from '@nestjs/core';
+import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
 import { ValidationPipe } from '@nestjs/common';
-import { RolesGuard } from './common/auth.guard';
+
 import { HttpExceptionFilter } from './common/filter';
 import { TransformInterceptor } from './common/response';
 // 静态资源访问
@@ -23,7 +23,6 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter()); // 异常拦截器
   app.useGlobalInterceptors(new TransformInterceptor()); // 响应拦截器
   app.useGlobalPipes(new ValidationPipe()); // 全局管道
-  app.useGlobalGuards(new RolesGuard(new Reflector())); // 全局守卫
 
   app.use(
     session({

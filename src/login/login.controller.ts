@@ -21,6 +21,7 @@ export class LoginController {
           username: foundUser.username,
         },
       });
+
       res.setHeader('token', token);
       return 'login success';
     } else {

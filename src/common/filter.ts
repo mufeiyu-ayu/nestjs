@@ -1,10 +1,9 @@
 import {
-  ExceptionFilter,
-  Catch,
   ArgumentsHost,
+  Catch,
+  ExceptionFilter,
   HttpException,
 } from '@nestjs/common';
-import { exec } from 'child_process';
 import { Request, Response } from 'express';
 
 @Catch(HttpException)
@@ -21,8 +20,9 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const returnMessage = () => {
       if (typeof res === 'string') {
         return res;
-      } else if (typeof res === 'object') {
-        return res.message[0];
+      } else if (typeof res.message === 'object') {
+        let result = res.message?.join(',');
+        return result;
       }
     };
 

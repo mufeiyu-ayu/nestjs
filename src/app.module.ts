@@ -12,7 +12,11 @@ import { LoginModule } from './login/login.module';
 import { OnebymoreModule } from './onebymore/onebymore.module';
 import { OnebyoneModule } from './onebyone/onebyone.module';
 import { OssModule } from './oss/oss.module';
+import { PermissionGuard } from './permission.guard';
 import { PersonModule } from './person/person.module';
+import { RbacUserModule } from './rbac-user/rbac-user.module';
+import { RbacaaaModule } from './rbacaaa/rbacaaa.module';
+import { RbacbbbModule } from './rbacbbb/rbacbbb.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -21,8 +25,8 @@ import { PersonModule } from './person/person.module';
       password: 'xiangjiayi53822', //密码
       host: 'localhost', //host
       port: 3306, //
-      database: 'typeorm_test', //库名
-      // entities: [__dirname + '/**/*.entity{.ts,.js}'], //实体文件
+      database: 'rbac_test', //库名
+      // entities: [User, Role, Permission], //实体文件
       synchronize: true, //synchronize字段代表是否自动将实体类同步到数据库
       // logging: true,
       retryDelay: 500, //重试连接数据库间隔
@@ -49,6 +53,9 @@ import { PersonModule } from './person/person.module';
     AclModule,
     AclaaaModule,
     AclbbbModule,
+    RbacUserModule,
+    RbacaaaModule,
+    RbacbbbModule,
   ],
   controllers: [AppController], // 模块中定义的必须实例化的控制器集
   providers: [
@@ -56,6 +63,10 @@ import { PersonModule } from './person/person.module';
     {
       provide: APP_GUARD,
       useClass: RolesGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: PermissionGuard,
     },
   ], // 将由Nest注入器实例化并且至少可以在此模块之间共享的提供程序
 })

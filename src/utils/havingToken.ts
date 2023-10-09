@@ -1,7 +1,19 @@
 import { HttpException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
-const whiteList = ['/login/login', '/login/register', '/404'];
+import { RBAC_Role } from '../rbac-user/entities/Role.entity';
+const whiteList = ['/rbac/login', '/login/register', '/404'];
+declare module 'express' {
+  interface Request {
+    /**
+     * type {user} 用户信息
+     */
+    user: {
+      username: string;
+      roles: RBAC_Role[];
+    };
+  }
+}
 export const havingToking = (req: Request, jwtService: JwtService): boolean => {
   let url = req.url;
   if (!whiteList.includes(url)) {
@@ -16,7 +28,7 @@ export const havingToking = (req: Request, jwtService: JwtService): boolean => {
     try {
       const info = jwtService.verify(token); // 这里已经在做验证token是否正确的操作了
 
-      (req as any).user = info.user;
+      req.user = info.user;
       return true;
     } catch (e) {
       throw new HttpException('token错误', 401);

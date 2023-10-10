@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -8,6 +9,7 @@ import { AclbbbModule } from './aclbbb/aclbbb.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { RolesGuard } from './common/auth.guard';
+import config from './config';
 import { LoginModule } from './login/login.module';
 import { OnebymoreModule } from './onebymore/onebymore.module';
 import { OnebyoneModule } from './onebyone/onebyone.module';
@@ -44,6 +46,14 @@ import { RbacbbbModule } from './rbacbbb/rbacbbb.module';
       signOptions: {
         expiresIn: '30m',
       },
+    }),
+    ConfigModule.forRoot({
+      isGlobal: true, // 是否为全局配置
+      // envFilePath: [
+      //   path.join(process.cwd(), '.aaa.env'),
+      //   path.join(process.cwd(), '.env'),
+      // ],
+      load: [config],
     }),
     PersonModule,
     OssModule,

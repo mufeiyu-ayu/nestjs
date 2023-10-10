@@ -2,7 +2,7 @@ import { HttpException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { RBAC_Role } from '../rbac-user/entities/Role.entity';
-const whiteList = ['/rbac/login', '/login/register', '/404'];
+const whiteList = ['/rbac/login', '/login/register', '/404', '/rbac/refresh'];
 declare module 'express' {
   interface Request {
     /**
@@ -16,6 +16,10 @@ declare module 'express' {
 }
 export const havingToking = (req: Request, jwtService: JwtService): boolean => {
   let url = req.url;
+  if (url.includes('?')) {
+    url = url.split('?')[0];
+  }
+
   if (!whiteList.includes(url)) {
     // 未携带token
     const authorization = req.header('authorization') || '';

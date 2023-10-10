@@ -115,4 +115,14 @@ export class RbacUserService {
       },
     });
   }
+  async findOne(id: any) {
+    return await this.entityManager.findOne(User, {
+      where: {
+        id,
+      },
+      relations: {
+        roles: true,
+      },
+    });
+  }
 }

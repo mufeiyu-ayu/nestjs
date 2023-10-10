@@ -42,7 +42,7 @@ import { RbacbbbModule } from './rbacbbb/rbacbbb.module';
       global: true,
       secret: 'ayu',
       signOptions: {
-        expiresIn: '7d',
+        expiresIn: '30m',
       },
     }),
     PersonModule,
